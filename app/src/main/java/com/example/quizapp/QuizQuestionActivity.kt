@@ -40,8 +40,6 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener {
         tv_option_three.setOnClickListener(this);
         tv_option_four.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
-
-
     }
 
     private fun setQuestion(){
