@@ -75,6 +75,9 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener {
                         setQuestion()
                     }else{
                         val intent = Intent(this, ResultActivity::class.java)
+                        intent.putExtra(Constants.userName, mUserName);
+                        intent.putExtra(Constants.correctAns, mCorrectAns.toString());
+                        intent.putExtra(Constants.totalQuestions, mQuestionsList!!.size.toString());
                         startActivity(intent);
                         finish();
                     }
@@ -129,6 +132,7 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener {
         iv_image.setImageResource(question!!.image);
         progressBar.progress = mCurrentPosition;
 
+        tv_progress.maxEms = mQuestionsList!!.size;
         tv_progress.text = "$mCurrentPosition / ${mQuestionsList!!.size}";
         tv_option_one.text = question!!.optionFirst
         tv_option_two.text = question!!.optionSecond
