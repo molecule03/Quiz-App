@@ -42,6 +42,59 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener {
         btn_submit.setOnClickListener(this);
     }
 
+    override fun onClick(v: View?) {
+
+        var tv_option_one : TextView = findViewById(R.id.tv_option_one);
+        var tv_option_two : TextView = findViewById(R.id.tv_option_two);
+        var tv_option_three : TextView = findViewById(R.id.tv_option_three);
+        var tv_option_four : TextView = findViewById(R.id.tv_option_four);
+        val btn_submit : Button = findViewById(R.id.btn_submit)
+
+
+        when(v?.id){
+            R.id.tv_option_one ->{
+                selectedOptionView(tv_option_one, 1)
+            }
+            R.id.tv_option_two ->{
+                selectedOptionView(tv_option_two, 2)
+            }
+            R.id.tv_option_three ->{
+                selectedOptionView(tv_option_three, 3)
+            }
+            R.id.tv_option_four ->{
+                selectedOptionView(tv_option_four, 4)
+            }
+            R.id.btn_submit ->{
+                if(mSelectedPostion == 0) {
+                    mCurrentPosition++;
+                    if(mCurrentPosition <= mQuestionsList!!.size ){
+                        setQuestion()
+                    }else{
+                        Toast.makeText(this, "This was the last question", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+
+                    val question: Questions? = mQuestionsList!![mCurrentPosition-1];
+                    if(question!!.correctAns != mSelectedPostion) {
+                        answerView(mSelectedPostion, R.drawable.wrong_option_broder_bg)
+                    }else{
+                        mCorrectAns++;
+                    }
+                    answerView(question!!.correctAns, R.drawable.correct_option_border_bg)
+
+                    if(mCurrentPosition == mQuestionsList!!.size) {
+                        btn_submit.text = "FINISH";
+                    }else{
+                        btn_submit.text = "GO TO NEXT QUESTION"
+                    }
+                    mSelectedPostion = 0;
+                }
+            }
+
+        }
+    }
+
     private fun setQuestion(){
 
         val progressBar : ProgressBar= findViewById(R.id.progressBar);
@@ -78,58 +131,7 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener {
     }
 
 
-    override fun onClick(v: View?) {
 
-        var tv_option_one : TextView = findViewById(R.id.tv_option_one);
-        var tv_option_two : TextView = findViewById(R.id.tv_option_two);
-        var tv_option_three : TextView = findViewById(R.id.tv_option_three);
-        var tv_option_four : TextView = findViewById(R.id.tv_option_four);
-        val btn_submit : Button = findViewById(R.id.btn_submit)
-
-
-        when(v?.id){
-            R.id.tv_option_one ->{
-                selectedOptionView(tv_option_one, 1)
-            }
-            R.id.tv_option_two ->{
-                selectedOptionView(tv_option_two, 2)
-            }
-            R.id.tv_option_three ->{
-                selectedOptionView(tv_option_three, 3)
-            }
-            R.id.tv_option_four ->{
-                selectedOptionView(tv_option_four, 4)
-            }
-            R.id.btn_submit ->{
-                if(mSelectedPostion == 0) {
-                    mCurrentPosition++;
-                    if(mCurrentPosition <= mQuestionsList!!.size ){
-                            setQuestion()
-                    }else{
-                        Toast.makeText(this, "This was the last question", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else{
-
-                    val question: Questions? = mQuestionsList!![mCurrentPosition-1];
-                    if(question!!.correctAns != mSelectedPostion) {
-                        answerView(mSelectedPostion, R.drawable.wrong_option_broder_bg)
-                    }else{
-                        mCorrectAns++;
-                    }
-                    answerView(question!!.correctAns, R.drawable.correct_option_border_bg)
-
-                    if(mCurrentPosition == mQuestionsList!!.size) {
-                        btn_submit.text = "FINISH";
-                    }else{
-                        btn_submit.text = "GO TO NEXT QUESTION"
-                    }
-                    mSelectedPostion = 0;
-                }
-            }
-
-        }
-    }
 
     private fun answerView(answer : Int, drawableView : Int){
 

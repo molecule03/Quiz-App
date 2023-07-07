@@ -5,54 +5,70 @@
     android:id="@+id/containerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:background="@drawable/ic_bg"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".MainActivity">
 
 
     <TextView
-        android:id="@+id/tv_appName"
+        android:id="@+id/tv_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginBottom="30dp"
-        android:textSize="30sp"
+        android:layout_marginTop="25dp"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:textColor="@android:color/white"
         android:text="Result"/>
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:id="@+id/iv_trophy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="image"
         android:src="@drawable/ic_trophy"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tv_congratulations"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="30sp"
+        android:layout_marginTop="16dp"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:textColor="@android:color/white"
-        android:text="Congratulations"/>
+        android:text="Hey, Congratulations !"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tv_userName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="30sp"
+        android:textSize="22sp"
         android:textStyle="bold"
+        android:layout_marginTop="25dp"
         android:textColor="@android:color/white"
-        android:text="Your Score is"/>
+        android:text="UserName"/>
 
     <TextView
+        android:id="@+id/tv_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/secondary_text_dark"
+        android:text="Your score is 9 out of 10"/>
+
+    <Button
+        android:id="@+id/btn_finish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-
-        android:textSize="30sp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@android:color/white"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:text="9/10"/>
+        android:textSize="18sp"
+        android:text="FINISH"/>
 
 </LinearLayout>
