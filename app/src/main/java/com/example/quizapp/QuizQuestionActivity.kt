@@ -1,5 +1,6 @@
 package com.example.quizapp
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener {
     private var mQuestionsList : ArrayList<Questions>? = null;
     private var mSelectedPostion : Int = 0;
     private var mCorrectAns : Int = 0;
+    private var mUserName : String? = null;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +34,8 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener {
         val tv_option_three : TextView = findViewById(R.id.tv_option_three);
         val tv_option_four : TextView = findViewById(R.id.tv_option_four);
         val btn_submit : Button = findViewById(R.id.btn_submit)
+
+        mUserName = intent.getStringExtra(Constants.userName) ;
 
         setQuestion()
 
@@ -70,7 +74,9 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener {
                     if(mCurrentPosition <= mQuestionsList!!.size ){
                         setQuestion()
                     }else{
-                        Toast.makeText(this, "This was the last question", Toast.LENGTH_SHORT).show();
+                        val intent = Intent(this, ResultActivity::class.java)
+                        startActivity(intent);
+                        finish();
                     }
                 }
                 else{
