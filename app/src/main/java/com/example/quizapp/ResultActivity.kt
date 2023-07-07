@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 
@@ -12,6 +13,8 @@ class ResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
+
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN;
 
         val tv_userName : TextView = findViewById(R.id.tv_userName)
         val tv_score : TextView = findViewById(R.id.tv_score);
