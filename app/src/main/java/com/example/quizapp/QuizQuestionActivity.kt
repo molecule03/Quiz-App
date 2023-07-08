@@ -213,6 +213,7 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener {
     private fun selectedOptionView(tv : TextView, selectedOptionNum : Int){
 
         defautOptionsView()
+
         mSelectedPostion = selectedOptionNum;
 
         tv.setTextColor(Color.parseColor("#363A43"));
