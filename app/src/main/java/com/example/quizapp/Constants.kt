@@ -1,21 +1,44 @@
 package com.example.quizapp
 
+/**
+
+Constants object that contains various constants used in the QuizApp.
+ */
 object Constants {
 
-    const val userName : String = "username";
-    const val totalQuestions : String = "totalQuestions"
-    const val correctAns : String = "correctAns";
-    fun getQuestions(): ArrayList<Questions> {
-        val questionList = ArrayList<Questions>();
+    /**
 
+    Key for storing and retrieving the username in shared preferences.
+     */
+    const val userName: String = "username"
+    /**
+
+    Key for storing and retrieving the total number of questions in shared preferences.
+     */
+    const val totalQuestions: String = "totalQuestions"
+    /**
+
+    Key for storing and retrieving the number of correct answers in shared preferences.
+     */
+    const val correctAns: String = "correctAns"
+    /**
+
+    Function to retrieve a list of pre-defined quiz questions.
+
+    @return ArrayList of Questions objects.
+     */
+    fun getQuestions(): ArrayList<Questions> {
+        val questionList = ArrayList<Questions>()
+
+// Define the quiz questions and their details
         val q1 = Questions(
             1,
             "What country does this flag belong to?",
-             R.drawable.ic_flag_of_india,
+            R.drawable.ic_flag_of_india,
             "USA",
             "India",
             "Iran",
-            "Isreal",
+            "Israel",
             2
         )
 
@@ -37,21 +60,23 @@ object Constants {
             "Belgium",
             "Russia",
             "Bhangi Pakistan",
-            "Holand",
+            "Holland",
             1
         )
+
         val q4 = Questions(
-            3,
+            4,
             "What country does this flag belong to?",
             R.drawable.ic_flag_of_argentina,
             "Columbia",
             "Nepal",
             "Argentina",
-            "Holand",
+            "Holland",
             3
         )
+
         val q5 = Questions(
-            3,
+            5,
             "What country does this flag belong to?",
             R.drawable.ic_flag_of_australia,
             "USA",
@@ -60,28 +85,31 @@ object Constants {
             "Iraq",
             2
         )
+
         val q6 = Questions(
-            3,
+            6,
             "What country does this flag belong to?",
             R.drawable.ic_flag_of_denmark,
-            "Denmark ",
+            "Denmark",
             "Russia",
             "Belgium",
             "Poland",
             1
         )
+
         val q7 = Questions(
-            3,
+            7,
             "What country does this flag belong to?",
             R.drawable.ic_flag_of_fiji,
-            "Cananda",
+            "Canada",
             "Fiji",
             "Iceland",
             "England",
             2
         )
+
         val q8 = Questions(
-            3,
+            8,
             "What country does this flag belong to?",
             R.drawable.ic_flag_of_germany,
             "France",
@@ -90,18 +118,20 @@ object Constants {
             "Germany",
             4
         )
+
         val q9 = Questions(
-            3,
+            9,
             "What country does this flag belong to?",
             R.drawable.ic_flag_of_kuwait,
             "Kuwait",
-            "Afganisthan",
+            "Afghanistan",
             "Saudi Arabia",
             "Egypt",
             1
         )
+
         val q10 = Questions(
-            3,
+            10,
             "What country does this flag belong to?",
             R.drawable.ic_flag_of_new_zealand,
             "USA",
@@ -111,18 +141,18 @@ object Constants {
             4
         )
 
+// Add the quiz questions to the questionList
         questionList.add(q1)
-        questionList.add(q2);
-        questionList.add(q3);
-        questionList.add(q4);
-        questionList.add(q5);
-        questionList.add(q6);
-        questionList.add(q7);
-        questionList.add(q8);
-        questionList.add(q9);
-        questionList.add(q10);
+        questionList.add(q2)
+        questionList.add(q3)
+        questionList.add(q4)
+        questionList.add(q5)
+        questionList.add(q6)
+        questionList.add(q7)
+        questionList.add(q8)
+        questionList.add(q9)
+        questionList.add(q10)
 
         return questionList
     }
-
 }
