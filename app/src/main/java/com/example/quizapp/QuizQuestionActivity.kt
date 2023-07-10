@@ -14,216 +14,210 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 
-class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener {
+/**
+ * This activity displays the quiz questions and handles user interaction.
+ */
+class QuizQuestionActivity : AppCompatActivity(), View.OnClickListener {
 
+    // Current position of the quiz question
+    private var mCurrentPosition = 1
 
+    // List of quiz questions
+    private var mQuestionsList: ArrayList<Questions>? = null
 
-    private var  mCurrentPosition = 1;
-    private var mQuestionsList : ArrayList<Questions>? = null;
-    private var mSelectedPostion : Int = 0;
-    private var mCorrectAns : Int = 0;
-    private var mUserName : String? = null;
+    // Selected position by the user
+    private var mSelectedPosition: Int = 0
 
+    // Number of correct answers
+    private var mCorrectAnswers: Int = 0
+
+    // User name
+    private var mUserName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_question)
 
-        val tv_option_one : TextView = findViewById(R.id.tv_option_one);
-        val tv_option_two : TextView = findViewById(R.id.tv_option_two);
-        val tv_option_three : TextView = findViewById(R.id.tv_option_three);
-        val tv_option_four : TextView = findViewById(R.id.tv_option_four);
-        val btn_submit : Button = findViewById(R.id.btn_submit)
+        // Get references to UI elements
+        val tvOptionOne: TextView = findViewById(R.id.tv_option_one)
+        val tvOptionTwo: TextView = findViewById(R.id.tv_option_two)
+        val tvOptionThree: TextView = findViewById(R.id.tv_option_three)
+        val tvOptionFour: TextView = findViewById(R.id.tv_option_four)
+        val btnSubmit: Button = findViewById(R.id.btn_submit)
 
-        mUserName = intent.getStringExtra(Constants.userName) ;
+        // Get user name from the previous activity
+        mUserName = intent.getStringExtra(Constants.userName)
 
+        // Set up click listeners
+        tvOptionOne.setOnClickListener(this)
+        tvOptionTwo.setOnClickListener(this)
+        tvOptionThree.setOnClickListener(this)
+        tvOptionFour.setOnClickListener(this)
+        btnSubmit.setOnClickListener(this)
+
+        // Set up the first question
         setQuestion()
-
-        tv_option_one.setOnClickListener(this);
-        tv_option_two.setOnClickListener(this);
-        tv_option_three.setOnClickListener(this);
-        tv_option_four.setOnClickListener(this);
-        btn_submit.setOnClickListener(this);
     }
 
     override fun onClick(v: View?) {
+        // Get references to UI elements
+        val tvOptionOne: TextView = findViewById(R.id.tv_option_one)
+        val tvOptionTwo: TextView = findViewById(R.id.tv_option_two)
+        val tvOptionThree: TextView = findViewById(R.id.tv_option_three)
+        val tvOptionFour: TextView = findViewById(R.id.tv_option_four)
+        val btnSubmit: Button = findViewById(R.id.btn_submit)
 
-        var tv_option_one : TextView = findViewById(R.id.tv_option_one);
-        var tv_option_two : TextView = findViewById(R.id.tv_option_two);
-        var tv_option_three : TextView = findViewById(R.id.tv_option_three);
-        var tv_option_four : TextView = findViewById(R.id.tv_option_four);
-        val btn_submit : Button = findViewById(R.id.btn_submit)
-
-
-        when(v?.id){
-            R.id.tv_option_one ->{
-                selectedOptionView(tv_option_one, 1)
+        when (v?.id) {
+            R.id.tv_option_one -> {
+                selectedOptionView(tvOptionOne, 1)
             }
-            R.id.tv_option_two ->{
-                selectedOptionView(tv_option_two, 2)
+            R.id.tv_option_two -> {
+                selectedOptionView(tvOptionTwo, 2)
             }
-            R.id.tv_option_three ->{
-                selectedOptionView(tv_option_three, 3)
+            R.id.tv_option_three -> {
+                selectedOptionView(tvOptionThree, 3)
             }
-            R.id.tv_option_four ->{
-                selectedOptionView(tv_option_four, 4)
+            R.id.tv_option_four -> {
+                selectedOptionView(tvOptionFour, 4)
             }
-            R.id.btn_submit ->{
-                if(mSelectedPostion == 0) {
-                    mCurrentPosition++;
-                    if(mCurrentPosition <= mQuestionsList!!.size ){
+            R.id.btn_submit -> {
+                if (mSelectedPosition == 0) {
+                    // User has not selected an option, move to the next question
+                    mCurrentPosition++
+                    if (mCurrentPosition <= mQuestionsList!!.size) {
                         setQuestion()
-                    }else{
+                    } else {
+                        // User has answered all questions, go to the result activity
                         val intent = Intent(this, ResultActivity::class.java)
-                        intent.putExtra(Constants.userName, mUserName);
-                        intent.putExtra(Constants.correctAns, mCorrectAns.toString());
-                        intent.putExtra(Constants.totalQuestions, mQuestionsList!!.size.toString());
-                        startActivity(intent);
-                        finish();
+                        intent.putExtra(Constants.userName, mUserName)
+                        intent.putExtra(Constants.correctAns, mCorrectAnswers.toString())
+                        intent.putExtra(Constants.totalQuestions, mQuestionsList!!.size.toString())
+                        startActivity(intent)
+                        finish()
                     }
-                }
-                else{
+                } else {
+                    // User has selected an option, check if it is correct
+                    val question: Questions? = mQuestionsList!![mCurrentPosition - 1]
+                    if (question!!.correctAns != mSelectedPosition) {
+                        // User's answer is incorrect
+                        answerView(mSelectedPosition, R.drawable.wrong_option_broder_bg)
+                    } else {
+                        // User's answer is correct
+                        mCorrectAnswers++
+                    }
+                    answerView(question.correctAns, R.drawable.correct_option_border_bg)
 
-                    val question: Questions? = mQuestionsList!![mCurrentPosition-1];
-                    if(question!!.correctAns != mSelectedPostion) {
-                        answerView(mSelectedPostion, R.drawable.wrong_option_broder_bg)
-                    }else{
-                        mCorrectAns++;
+                    if (mCurrentPosition == mQuestionsList!!.size) {
+                        // Last question, change submit button text to "FINISH"
+                        btnSubmit.text = "FINISH"
+                    } else {
+                        // Not the last question, change submit button text to "GO TO NEXT QUESTION"
+                        btnSubmit.text = "GO TO NEXT QUESTION"
                     }
-                    answerView(question!!.correctAns, R.drawable.correct_option_border_bg)
-
-                    if(mCurrentPosition == mQuestionsList!!.size) {
-                        btn_submit.text = "FINISH";
-                    }else{
-                        btn_submit.text = "GO TO NEXT QUESTION"
-                    }
-                    mSelectedPostion = 0;
+                    mSelectedPosition = 0
                 }
             }
-
         }
     }
 
-    private fun setQuestion(){
+    private fun setQuestion() {
+        // Get references to UI elements
+        val progressBar: ProgressBar = findViewById(R.id.progressBar)
+        val tvProgress: TextView = findViewById(R.id.tv_progress)
+        val tvQuestion: TextView = findViewById(R.id.tv_question)
+        val ivImage: ImageView = findViewById(R.id.iv_image)
+        val tvOptionOne: TextView = findViewById(R.id.tv_option_one)
+        val tvOptionTwo: TextView = findViewById(R.id.tv_option_two)
+        val tvOptionThree: TextView = findViewById(R.id.tv_option_three)
+        val tvOptionFour: TextView = findViewById(R.id.tv_option_four)
+        val btnSubmit: Button = findViewById(R.id.btn_submit)
 
-        val progressBar : ProgressBar= findViewById(R.id.progressBar);
-        val tv_progress : TextView = findViewById(R.id.tv_progress);
-        val tv_question : TextView = findViewById(R.id.tv_question);
-        val iv_image : ImageView = findViewById(R.id.iv_image);
-        val tv_option_one : TextView = findViewById(R.id.tv_option_one);
-        val tv_option_two : TextView = findViewById(R.id.tv_option_two);
-        val tv_option_three : TextView = findViewById(R.id.tv_option_three);
-        val tv_option_four : TextView = findViewById(R.id.tv_option_four);
-        val btn_submit : Button = findViewById(R.id.btn_submit)
+        // Get the list of quiz questions
+        mQuestionsList = Constants.getQuestions()
 
+        // Get the current question
+        val question: Questions? = mQuestionsList!![mCurrentPosition - 1]
 
-        mQuestionsList = Constants.getQuestions();
-        val question: Questions? = mQuestionsList!![mCurrentPosition-1];
+        // Reset the UI to default state
+        defaultOptionsView()
 
-        defautOptionsView();
-
-        if(mCurrentPosition == mQuestionsList!!.size){
-            btn_submit.text = "FINISH"
-        }else{
-            btn_submit.text = "SUBMIT"
+        // Update the submit button text based on the current question
+        if (mCurrentPosition == mQuestionsList!!.size) {
+            btnSubmit.text = "FINISH"
+        } else {
+            btnSubmit.text = "SUBMIT"
         }
 
-        tv_question.text = question!!.question;
-        iv_image.setImageResource(question!!.image);
-        progressBar.progress = mCurrentPosition;
-
-        tv_progress.maxEms = mQuestionsList!!.size;
-        tv_progress.text = "$mCurrentPosition / ${mQuestionsList!!.size}";
-        tv_option_one.text = question!!.optionFirst
-        tv_option_two.text = question!!.optionSecond
-        tv_option_three.text = question!!.optionThird
-        tv_option_four.text = question!!.optionFourth
+        // Update UI elements with the current question data
+        tvQuestion.text = question!!.question
+        ivImage.setImageResource(question.image)
+        progressBar.progress = mCurrentPosition
+        tvProgress.maxEms = mQuestionsList!!.size
+        tvProgress.text = "$mCurrentPosition / ${mQuestionsList!!.size}"
+        tvOptionOne.text = question.optionFirst
+        tvOptionTwo.text = question.optionSecond
+        tvOptionThree.text = question.optionThird
+        tvOptionFour.text = question.optionFourth
     }
 
+    private fun answerView(answer: Int, drawableView: Int) {
+        // Get references to UI elements
+        val tvOptionOne: TextView = findViewById(R.id.tv_option_one)
+        val tvOptionTwo: TextView = findViewById(R.id.tv_option_two)
+        val tvOptionThree: TextView = findViewById(R.id.tv_option_three)
+        val tvOptionFour: TextView = findViewById(R.id.tv_option_four)
 
-
-
-    private fun answerView(answer : Int, drawableView : Int){
-
-
-        var tv_option_one : TextView = findViewById(R.id.tv_option_one);
-        var tv_option_two : TextView = findViewById(R.id.tv_option_two);
-        var tv_option_three : TextView = findViewById(R.id.tv_option_three);
-        var tv_option_four : TextView = findViewById(R.id.tv_option_four);
-
-
-
-        when(answer){
+        when (answer) {
             1 -> {
-                tv_option_one.background = ContextCompat.getDrawable(
-                    this,
-                    drawableView
-                )
+                tvOptionOne.background = ContextCompat.getDrawable(this, drawableView)
             }
             2 -> {
-                tv_option_two.background = ContextCompat.getDrawable(
-                    this,
-                    drawableView
-                )
+                tvOptionTwo.background = ContextCompat.getDrawable(this, drawableView)
             }
             3 -> {
-                tv_option_three.background = ContextCompat.getDrawable(
-                    this,
-                    drawableView
-                )
+                tvOptionThree.background = ContextCompat.getDrawable(this, drawableView)
             }
-            4->{
-                tv_option_four.background = ContextCompat.getDrawable(
-                    this,
-                    drawableView
-                )
+            4 -> {
+                tvOptionFour.background = ContextCompat.getDrawable(this, drawableView)
             }
-
         }
-
     }
 
+    private fun defaultOptionsView() {
+        // Get references to UI elements
+        val tvOptionOne: TextView = findViewById(R.id.tv_option_one)
+        val tvOptionTwo: TextView = findViewById(R.id.tv_option_two)
+        val tvOptionThree: TextView = findViewById(R.id.tv_option_three)
+        val tvOptionFour: TextView = findViewById(R.id.tv_option_four)
 
+        val options = ArrayList<TextView>()
+        options.add(0, tvOptionOne)
+        options.add(1, tvOptionTwo)
+        options.add(2,tvOptionThree)
+        options.add(3, tvOptionFour)
 
-    private fun defautOptionsView(){
-
-        var tv_option_one : TextView = findViewById(R.id.tv_option_one);
-        var tv_option_two : TextView = findViewById(R.id.tv_option_two);
-        var tv_option_three : TextView = findViewById(R.id.tv_option_three);
-        var tv_option_four : TextView = findViewById(R.id.tv_option_four);
-
-        val options = ArrayList<TextView>();
-        options.add(0,tv_option_one)
-        options.add(1,tv_option_two)
-        options.add(2,tv_option_three)
-        options.add(3,tv_option_four)
-
-        for(option in options){
-
-            option.setTextColor(Color.parseColor("#7A8089"));
+        for (option in options) {
+            option.setTextColor(Color.parseColor("#7A8089"))
             option.typeface = Typeface.DEFAULT
             option.background = ContextCompat.getDrawable(
                 this,
                 R.drawable.default_option_border_bg
             )
-
         }
     }
 
-    private fun selectedOptionView(tv : TextView, selectedOptionNum : Int){
+    private fun selectedOptionView(tv: TextView, selectedOptionNum: Int) {
+        // Reset the UI to default state
+        defaultOptionsView()
 
-        defautOptionsView()
+        // Highlight the selected option
+        mSelectedPosition = selectedOptionNum
 
-        mSelectedPostion = selectedOptionNum;
-
-        tv.setTextColor(Color.parseColor("#363A43"));
+        tv.setTextColor(Color.parseColor("#363A43"))
         tv.typeface = Typeface.DEFAULT_BOLD
         tv.background = ContextCompat.getDrawable(
             this,
             R.drawable.selected_option_border_bg
         )
-
     }
-
-
 }
